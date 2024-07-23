@@ -38,5 +38,5 @@ func (dailyPartitionOptions *DailyPartitionOptions) NotBeforeBoundary() (boundar
 	return dailyPartitionOptions.boundary(time.Now().AddDate(0, 0, -dailyPartitionOptions.DaysBackward))
 }
 func (dailyPartitionOptions *DailyPartitionOptions) NotAfterBoundary() (boundaryTime time.Time) {
-	return dailyPartitionOptions.boundary(time.Now().AddDate(0, 0, dailyPartitionOptions.DaysForward))
+	return dailyPartitionOptions.boundary(time.Now().AddDate(0, 0, dailyPartitionOptions.DaysForward+1).Add(-time.Nanosecond))
 }

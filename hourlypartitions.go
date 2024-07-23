@@ -38,5 +38,5 @@ func (hourlyPartitionOptions *HourlyPartitionOptions) NotBeforeBoundary() (bound
 	return hourlyPartitionOptions.boundary(time.Now().Add(-time.Duration(hourlyPartitionOptions.HoursBackward) * time.Hour))
 }
 func (hourlyPartitionOptions *HourlyPartitionOptions) NotAfterBoundary() (boundaryTime time.Time) {
-	return hourlyPartitionOptions.boundary(time.Now().Add(time.Duration(hourlyPartitionOptions.HoursForward) * time.Hour))
+	return hourlyPartitionOptions.boundary(time.Now().Add(time.Duration(hourlyPartitionOptions.HoursForward+1)*time.Hour - time.Nanosecond))
 }
