@@ -36,7 +36,8 @@ func PartitionCreate(tx *sql.Tx, options PgPartitionsCreateOptions) (partitionTa
 	partitionTablesToAdd := []string{}
 	partitionTablesTime := []time.Time{}
 
-	for partitionTime := options.NotAfterBoundary(); partitionTime.After(options.NotBeforeBoundary()); partitionTime = options.PrevBoundary(partitionTime) {
+	for partitionTime := options.NotAfterBoundary(); partitionTime.After(options.NotBeforeBoundary()); {
+		partitionTime = options.PrevBoundary(partitionTime)
 		partitionTable := options.PartitionTable(partitionTime)
 		if exists, err := tableExists(tx, partitionTable); err != nil {
 			return nil, fmt.Errorf("when checking if partition table already exists")
