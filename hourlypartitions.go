@@ -5,6 +5,7 @@ import (
 )
 
 type HourlyPartitionOptions struct {
+	TableName     string
 	HoursForward  int
 	HoursBackward int
 }
@@ -17,10 +18,12 @@ func (hourlyPartitionOptions *HourlyPartitionOptions) BoundarySqlText(boundaryTi
 	return boundaryTime.Format("'2006-01-02 15:00:00'")
 }
 
-func (hourlyPartitionOptions *HourlyPartitionOptions) Table() (table string) { return "iislogentry" }
+func (hourlyPartitionOptions *HourlyPartitionOptions) Table() (table string) {
+	return hourlyPartitionOptions.TableName
+}
 
 func (hourlyPartitionOptions *HourlyPartitionOptions) PartitionTable(curTime time.Time) (partitionTable string) {
-	return "iislogentry_" + curTime.Format(`20060102H15`)
+	return hourlyPartitionOptions.TableName + "_" + curTime.Format(`20060102H15`)
 }
 
 func (hourlyPartitionOptions *HourlyPartitionOptions) PrevBoundary(curTime time.Time) (boundaryTime time.Time) {

@@ -5,6 +5,7 @@ import (
 )
 
 type DailyPartitionOptions struct {
+	TableName    string
 	DaysForward  int
 	DaysBackward int
 }
@@ -17,10 +18,12 @@ func (dailyPartitionOptions *DailyPartitionOptions) BoundarySqlText(boundaryTime
 	return boundaryTime.Format("'2006-01-02'")
 }
 
-func (dailyPartitionOptions *DailyPartitionOptions) Table() (table string) { return "iislogentry" }
+func (dailyPartitionOptions *DailyPartitionOptions) Table() (table string) {
+	return dailyPartitionOptions.TableName
+}
 
 func (dailyPartitionOptions *DailyPartitionOptions) PartitionTable(curTime time.Time) (partitionTable string) {
-	return "iislogentry_" + curTime.Format(`20060102`)
+	return dailyPartitionOptions.TableName + "_" + curTime.Format(`20060102`)
 }
 
 func (dailyPartitionOptions *DailyPartitionOptions) PrevBoundary(curTime time.Time) (boundaryTime time.Time) {
